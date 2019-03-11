@@ -20,7 +20,7 @@ public abstract class DAO <T>{
             transaction.begin();
             session.save(object);
             transaction.commit();
-        }catch (HibernateException e) {
+        }catch (Exception e) {
             System.err.println("Save is failed");
             System.err.println(e.getMessage());
             if (transaction != null)
@@ -42,7 +42,7 @@ public abstract class DAO <T>{
             session.delete(object);
 
             tr.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             System.err.println("Delete is failed");
             System.err.println(e.getMessage());
             if (tr != null)
@@ -63,7 +63,7 @@ public abstract class DAO <T>{
             session.update(object);
 
             tr.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             System.err.println("Update is failed");
             System.err.println(e.getMessage());
             if (tr != null)
@@ -86,7 +86,7 @@ public abstract class DAO <T>{
                 return null;
 
             return (T)list.get(0);
-        }catch(HibernateException e){
+        }catch(Exception e){
             System.err.println("Search is failed");
             System.err.println(e.getMessage());
         }finally {

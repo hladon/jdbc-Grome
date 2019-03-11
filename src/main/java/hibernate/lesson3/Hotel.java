@@ -12,30 +12,10 @@ public class Hotel {
     private String city;
     private String street;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Hotel hotel = (Hotel) o;
-        return Objects.equals(name, hotel.name) &&
-                Objects.equals(country, hotel.country) &&
-                Objects.equals(city, hotel.city) &&
-                Objects.equals(street, hotel.street);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, country, city, street);
-    }
-
-    @Override
-    public String toString() {
-        return id + "," + name + "," + country + "," + city + "," + street;
-
-    }
     @Id
-    @Column(name = "ID")
+    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
+    @Column(name = "ID",unique = true,nullable = false)
     public long getId() {
         return id;
     }
@@ -74,5 +54,27 @@ public class Hotel {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hotel hotel = (Hotel) o;
+        return Objects.equals(name, hotel.name) &&
+                Objects.equals(country, hotel.country) &&
+                Objects.equals(city, hotel.city) &&
+                Objects.equals(street, hotel.street);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, country, city, street);
+    }
+
+    @Override
+    public String toString() {
+        return id + "," + name + "," + country + "," + city + "," + street;
+
     }
 }
