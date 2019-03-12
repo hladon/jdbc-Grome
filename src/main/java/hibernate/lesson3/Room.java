@@ -12,7 +12,7 @@ public class Room {
     private boolean petsAllowed;
     private Date dateAvailableFrom;
     private Hotel hotel;
-
+    @Id
     @Column(name = "ID")
     public long getId() {
         return id;

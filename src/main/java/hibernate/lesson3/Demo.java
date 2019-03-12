@@ -12,7 +12,7 @@ public class Demo {
         hotel.setName("Hilton");
 
         hotelDAO.save(hotel);
-        System.out.println(hotelDAO.findById(1));
+//        System.out.println(hotelDAO.findById(1));
     }
 
 
