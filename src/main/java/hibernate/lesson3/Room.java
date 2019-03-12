@@ -12,7 +12,10 @@ public class Room {
     private boolean petsAllowed;
     private Date dateAvailableFrom;
     private Hotel hotel;
+
     @Id
+    @SequenceGenerator(name="R_SEQ",sequenceName = "ROOM_SEQ",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "R_SEQ")
     @Column(name = "ID")
     public long getId() {
         return id;
@@ -37,8 +40,8 @@ public class Room {
     public Date getDateAvailableFrom() {
         return dateAvailableFrom;
     }
-    @OneToOne(fetch = FetchType.LAZY )
-    @MapsId
+    @OneToOne(optional = false)
+    @JoinColumn(name="HOTEL", unique=true, nullable=false, updatable=false)
     public Hotel getHotel() {
         return hotel;
     }

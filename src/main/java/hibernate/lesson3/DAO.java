@@ -20,7 +20,7 @@ public abstract class DAO <T>{
             transaction.begin();
             session.save(object);
             transaction.commit();
-        }catch(Exception e) {
+        }catch (Exception e) {
             System.err.println("Save is failed");
             System.err.println(e.getMessage());
             if (transaction != null)
