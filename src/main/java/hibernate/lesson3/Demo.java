@@ -21,7 +21,7 @@ public class Demo {
         room.setHotel(hotelDAO.findById(21));
 
 //        hotelDAO.save(hotel);
-//        roomDAO.save(room);
+        roomDAO.save(room);
 //        roomDAO.delete(room);
 
 //        hotel.setCountry("China");
