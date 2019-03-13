@@ -22,8 +22,8 @@ public class Room {
     private boolean petsAllowed;
     @Column(name = "DATE_AVAILABLE_FROM")
     private Date dateAvailableFrom;
-    @OneToOne(targetEntity = Hotel.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @OneToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name ="HOTEL" )
     private Hotel hotel;
 
 
