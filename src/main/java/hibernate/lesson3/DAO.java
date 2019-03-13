@@ -78,25 +78,6 @@ public abstract class DAO <T>{
         return object;
     }
 
-        public T findByIdObject(long id,String table){
-        Session session=null;
-        String statment="SELECT * FROM "+table+" WHERE ID="+id;
-        try {
-            session = createSessionFactory().openSession();
-            SQLQuery query = session.createSQLQuery(statment);
-            List<T> list=query.list();
-            if(list.isEmpty())
-                return null;
-            return (T)list.get(0);
-        }catch(Exception e){
-            System.err.println("Search is failed");
-            System.err.println(e.getMessage());
-        }finally {
-            if (session!=null)
-                session.close();
-        }
-        return null;
-    }
 
     public static SessionFactory createSessionFactory() {
         if (sessionFactory == null) {
