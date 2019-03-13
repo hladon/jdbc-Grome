@@ -1,47 +1,52 @@
 package hibernate.lesson3;
 
+
 import javax.persistence.*;
 import java.util.Date;
 @Entity
 @Table(name = "ROOM")
 public class Room {
-    private long id;
-    private int numberOfGuests;
-    private double price;
-    private boolean breakfastIncluded;
-    private boolean petsAllowed;
-    private Date dateAvailableFrom;
-    private Hotel hotel;
-
     @Id
     @SequenceGenerator(name="R_SEQ",sequenceName = "ROOM_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "R_SEQ")
     @Column(name = "ID")
+    private long id;
+    @Column(name = "NUMBER_OF_GUEST")
+    private int numberOfGuests;
+    @Column(name = "PRICE")
+    private double price;
+
+    @Column(name = "BREAKFAST_INCLUDED")
+    private boolean breakfastIncluded;
+    @Column(name = "PETS_ALLOWED")
+    private boolean petsAllowed;
+    @Column(name = "DATE_AVAILABLE_FROM")
+    private Date dateAvailableFrom;
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Hotel hotel;
+
+
     public long getId() {
         return id;
     }
-    @Column(name = "NUMBER_OF_GUEST")
+
     public int getNumberOfGuests() {
         return numberOfGuests;
     }
-    @Column(name = "PRICE")
     public double getPrice() {
         return price;
     }
-    @Column(name = "BREAKFAST_INCLUDED")
     public boolean isBreakfastIncluded() {
         return breakfastIncluded;
     }
-    @Column(name = "PETS_ALLOWED")
     public boolean isPetsAllowed() {
         return petsAllowed;
     }
-    @Column(name = "DATE_AVAILABLE_FROM")
     public Date getDateAvailableFrom() {
         return dateAvailableFrom;
     }
-    @OneToOne(optional = false)
-    @JoinColumn(name="HOTEL", unique=true, nullable=false, updatable=false)
+
     public Hotel getHotel() {
         return hotel;
     }
@@ -76,7 +81,7 @@ public class Room {
 
     @Override
     public String toString() {
-        return id + "," + numberOfGuests + "," + price + "," + breakfastIncluded + "," + petsAllowed + "," + dateAvailableFrom.getTime() + "," + hotel.getId();
+        return id + "," + numberOfGuests + "," + price + "," + breakfastIncluded + "," + petsAllowed + "," + dateAvailableFrom.getTime() + "," + hotel;
 
     }
 }

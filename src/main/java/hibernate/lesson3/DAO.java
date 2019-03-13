@@ -29,6 +29,7 @@ public abstract class DAO <T>{
             if (session != null)
                 session.close();
         }
+        System.out.println("Save is done");
         return object;
     }
 
@@ -72,6 +73,8 @@ public abstract class DAO <T>{
             if (session != null)
                 session.close();
         }
+        System.out.println("Update is done");
+
         return object;
     }
 
@@ -84,7 +87,6 @@ public abstract class DAO <T>{
             List<T> list=query.list();
             if(list.isEmpty())
                 return null;
-
             return (T)list.get(0);
         }catch(Exception e){
             System.err.println("Search is failed");
