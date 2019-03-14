@@ -1,56 +1,92 @@
-package lesson36;
+package hibernate.lesson4;
 
 
-import lesson36.model.IdEntity;
-import lesson36.model.User;
-
-import java.io.*;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 
-public class Repository {
-    public static String repositoryLocation="";
-    public static String convert(String line){
-        return line;
+
+
+
+public abstract class Repository <T> {
+    private static SessionFactory sessionFactory;
+
+    public  T save (T object){
+        Session session=null;
+        Transaction transaction=null;
+        try{
+            session=createSessionFactory().openSession();
+            transaction=session.getTransaction();
+            transaction.begin();
+            session.save(object);
+            transaction.commit();
+        }catch (Exception e) {
+            System.err.println("Save is failed");
+            System.err.println(e.getMessage());
+            if (transaction != null)
+                transaction.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+        System.out.println("Save is done");
+        return object;
     }
 
-    public  List getList() throws Exception {
-        List list=new LinkedList();
-        String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(repositoryLocation))) {
-            while ((line = br.readLine()) != null) {
-                list.add(convert(line));
-            }
-        } catch (IOException io) {
-            throw new IOException("File " + repositoryLocation + " are missing");
+    public  void delete(T object) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.delete(object);
+
+            tr.commit();
+        } catch (Exception e) {
+            System.err.println("Delete is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
         }
-        return list;
+        System.out.println("Delete is done");
+    }
+    public T update(T object) {
+        Session session = null;
+        Transaction tr = null;
+        try {
+            session = createSessionFactory().openSession();
+            tr = session.getTransaction();
+            tr.begin();
+            session.update(object);
+
+            tr.commit();
+        } catch (Exception e) {
+            System.err.println("Update is failed");
+            System.err.println(e.getMessage());
+            if (tr != null)
+                tr.rollback();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+        System.out.println("Update is done");
+
+        return object;
     }
 
-    public static  <T> void save(List<T> list, String repositoryPath) throws IOException{
-        StringBuffer stringList=new StringBuffer();
-        for (T line: list){
-            stringList.append(line.toString());
-        }
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(repositoryPath, false))) {
-            br.write(String.valueOf(stringList));
-        } catch (IOException io) {
-            throw new  IOException("File " + repositoryPath + " not exist!");
-        }
-    }
 
-    public  <T extends IdEntity> T findById(long id) throws Exception{
-        List <T> list= getList();
-        for (int i=0; i<list.size();i++){
-            if (list.get(i).getId()==id)
-                return list.get(i);
+    protected   static SessionFactory createSessionFactory() {
+        if (sessionFactory == null) {
+            sessionFactory = new Configuration().configure().buildSessionFactory();
         }
-        return null;
+        return sessionFactory;
     }
-
 
 
 

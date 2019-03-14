@@ -1,17 +1,9 @@
-package lesson36;
+package hibernate.lesson4;
 
-import lesson36.model.Filter;
-import lesson36.model.Hotel;
-import lesson36.model.Room;
-import lesson36.model.User;
-
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Demo {
     public static void main(String[] args) throws Exception {
-        Controler controler = new Controler();
+        Controller controler = new Controller();
         controler.login("Vlad", "trew");
 
 //        System.out.println(controler.findHotelByName("Hilton").toString());

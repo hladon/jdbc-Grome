@@ -5,7 +5,6 @@ import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
 
-import java.util.List;
 
 
 public abstract class DAO <T>{
