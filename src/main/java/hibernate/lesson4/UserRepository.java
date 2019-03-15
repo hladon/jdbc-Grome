@@ -1,30 +1,26 @@
-package lesson36;
+package hibernate.lesson4;
 
-import lesson36.Exceptions.RepositoryDamaged;
-import lesson36.model.User;
 
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import hibernate.lesson4.model.User;
+import org.hibernate.Session;
+
+
+
 
 public class UserRepository extends Repository {
-    private static String repositoryLocation = "src\\lesson36\\repository\\UserDb";
-
-
-
-    public static void saveUser(List<User> roomList ) throws IOException {
-
-        save(roomList,repositoryLocation);
-    }
-
-
-    private static User convertToUser(String line) throws RepositoryDamaged{
-        if (line==null)
-            return null;
-        String[] values = line.split(",");
-        if (values.length!=5)
-            throw new RepositoryDamaged("Repository " + repositoryLocation + " are damaged") ;
-        return new User(Long.valueOf(values[0]),values[1],values[2],values[3],
-                UserType.valueOf(values[4]));
+    public User findById(long id){
+        Session session=null;
+        try {
+            session = createSessionFactory().openSession();
+            User user=session.get(User.class,id);
+            return user;
+        }catch(Exception e){
+            System.err.println("Search is failed");
+            System.err.println(e.getMessage());
+        }finally {
+            if (session!=null)
+                session.close();
+        }
+        return null;
     }
 }

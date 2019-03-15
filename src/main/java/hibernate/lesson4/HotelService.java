@@ -1,63 +1,31 @@
-package lesson36;
+package hibernate.lesson4;
+
+import hibernate.lesson4.model.Hotel;
 
 
-import lesson36.model.Hotel;
+import java.util.List;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Pattern;
-
-public class HotelService extends HotelRepository {
+public class HotelService  {
 
 
-//    public static Set findHotelByName(String name) throws Exception {
-//        Set<Hotel> list=new TreeSet<Hotel>();
-//        for (Hotel hotel : getList()) {
-//            if (hotel.getName().equalsIgnoreCase(name))
-//                list.add(hotel);
-//        }
-//        return list;
-//    }
-//
-//    public static Set findHotelByCity(String city) throws Exception {
-//        Set<Hotel> list=new TreeSet<Hotel>();
-//        for (Hotel hotel : getList()) {
-//            if (hotel.getCity().equalsIgnoreCase(city))
-//                list.add(hotel);
-//        }
-//        return list;
-//    }
-//
-//    public static Set findHotelByCountry(String country) throws Exception {
-//        Set<Hotel> list=new TreeSet<Hotel>();
-//        for (Hotel hotel : getList()) {
-//            if (hotel.getCountry().equalsIgnoreCase(country))
-//                list.add(hotel);
-//        }
-//        return list;
-//    }
-//
-//
-//    public static Hotel addHotel(Hotel hotel) throws Exception {
-//        if (hotel==null)
-//            return null;
-//        List<Hotel> list = getList();
-//        list.add(hotel);
-//        saveHotel(list);
-//        return hotel;
-//    }
-//
-//    public static void deleteHotel(long id) throws Exception {
-//        List<Hotel> list = getList();
-//        for (Hotel hotel:list){
-//            if (hotel.getId()==id){
-//                list.remove(hotel);
-//                saveHotel(list);
-//                return;
-//            }
-//
-//    }
+    private static HotelRepository hotelRepository=new HotelRepository();
 
-//}
+    public static List<Hotel> findHotelByName(String name) throws Exception {
+        String query="SELECT * FROM HOTELS WHERE NAME="+name;
+        return hotelRepository.findByQuery(query,"Hotel") ;
+    }
+
+    public static List<Hotel> findHotelByCity(String city) throws Exception {
+        String query="SELECT * FROM HOTELS WHERE CITY="+city;
+        return hotelRepository.findByQuery(query,"Hotel") ;
+    }
+
+    public static List<Hotel> findHotelByCountry(String country) throws Exception {
+        String query="SELECT * FROM HOTELS WHERE COUNTRY="+country;
+        return hotelRepository.findByQuery(query,"Hotel") ;
+    }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-package lesson36;
+package hibernate.lesson4;
 
 
 import lesson36.Exceptions.WrongPassword;

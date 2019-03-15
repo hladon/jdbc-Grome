@@ -1,8 +1,11 @@
 package hibernate.lesson4.model;
 
 
+import hibernate.lesson4.UserType;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USERS")

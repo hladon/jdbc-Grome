@@ -1,40 +1,23 @@
-package lesson36;
+package hibernate.lesson4;
 
-import lesson36.Exceptions.RepositoryDamaged;
-import lesson36.model.Hotel;
-import lesson36.model.Room;
-
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import hibernate.lesson3.Hotel;
+import org.hibernate.Session;
 
 public class HotelRepository extends Repository {
-    private static String repositoryLocation = "src\\lesson36\\repository\\HotelDb";
-
-
-
-    public static void saveHotel(List<Hotel> hotelList ) throws IOException {
-
-        save(hotelList,repositoryLocation);
+    public Hotel findById(long id){
+        Session session=null;
+        try {
+            session = createSessionFactory().openSession();
+            Hotel hotel=session.get(Hotel.class,id);
+            return hotel;
+        }catch(Exception e){
+            System.err.println("Search is failed");
+            System.err.println(e.getMessage());
+        }finally {
+            if (session!=null)
+                session.close();
+        }
+        return null;
     }
-
-//    public static Hotel findHotel(long id) throws Exception{
-//        return convertToHotel(findById(id,repositoryLocation));
-//
-//    }
-
-    private static Hotel convertToHotel(String line) throws Exception{
-        if (line==null)
-            return null;
-        String[] values = line.split(",");
-        if (values.length!=7)
-            throw new RepositoryDamaged("Repository " + repositoryLocation + " are damaged") ;
-        return new Hotel(Long.valueOf(values[0]), values[1], values[2], values[3], values[4]);
-    }
-
-
 
 }

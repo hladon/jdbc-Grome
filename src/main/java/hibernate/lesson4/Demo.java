@@ -3,7 +3,7 @@ package hibernate.lesson4;
 
 public class Demo {
     public static void main(String[] args) throws Exception {
-        Controller controler = new Controller();
+        Session controler = new Session();
         controler.login("Vlad", "trew");
 
 //        System.out.println(controler.findHotelByName("Hilton").toString());
