@@ -9,17 +9,21 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "USERS")
-public class User extends IdEntity{
+public class User {
     @Id
     @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
     private long id;
-    @Column
+    @Column(name = "USER_NAME")
     private String userName;
+    @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "COUNTRY")
     private String country;
+    @Column(name = "USER_TYPE")
     private UserType type;
+//    TODO
     private List<Order> orders;
 
     @Override

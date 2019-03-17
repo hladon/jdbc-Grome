@@ -5,13 +5,15 @@ import hibernate.lesson4.model.User;
 
 public class UserController  {
     public static User registerUser(User user) throws Exception {
-        if ( user.getType().equals(UserType.ADMIN)&&(Session.getLogedUser()==null||Session.getLogedUser().getType().equals(UserType.USER)))
-            throw new WrongUserType();
+        if ( Session.getLogedUser()!=null)
+            throw new Exception("You already logged!");
         return UserService.registerUser(user);
 
     }
 
     public static void login(String userName, String password) throws Exception {
+        if ( Session.getLogedUser()!=null)
+            throw new Exception("You already logged!");
          UserService.login(userName, password);
     }
 

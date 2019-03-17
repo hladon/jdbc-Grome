@@ -12,17 +12,17 @@ public class HotelService  {
 
     public static List<Hotel> findHotelByName(String name) throws Exception {
         String query="SELECT * FROM HOTELS WHERE NAME="+name;
-        return hotelRepository.findByQuery(query,"Hotel") ;
+        return hotelRepository.findByQuery(query) ;
     }
 
     public static List<Hotel> findHotelByCity(String city) throws Exception {
         String query="SELECT * FROM HOTELS WHERE CITY="+city;
-        return hotelRepository.findByQuery(query,"Hotel") ;
+        return hotelRepository.findByQuery(query) ;
     }
 
     public static List<Hotel> findHotelByCountry(String country) throws Exception {
         String query="SELECT * FROM HOTELS WHERE COUNTRY="+country;
-        return hotelRepository.findByQuery(query,"Hotel") ;
+        return hotelRepository.findByQuery(query) ;
     }
 
 

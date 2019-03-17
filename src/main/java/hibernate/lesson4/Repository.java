@@ -79,23 +79,7 @@ public abstract class Repository <T> {
         return object;
     }
 
-    public  List<T> findByQuery(String searchQuery,String entity) {
-        Session session = null;
-        try {
-            session = createSessionFactory().openSession();
-            SQLQuery query = session.createSQLQuery(searchQuery);
-            query.addEntity(entity);
-            List<T> list = query.list();
-            return list;
-        } catch (HibernateException e) {
-            System.err.println("Search is failed");
-            System.err.println(e.getMessage());
-        } finally {
-            if (session != null)
-                session.close();
-        }
-        return null;
-    }
+
 
     protected   static SessionFactory createSessionFactory() {
         if (sessionFactory == null) {

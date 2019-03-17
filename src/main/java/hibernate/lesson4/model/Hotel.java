@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name = "HOTELS")
-public class Hotel extends IdEntity {
+public class Hotel  {
     @Id
     @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")

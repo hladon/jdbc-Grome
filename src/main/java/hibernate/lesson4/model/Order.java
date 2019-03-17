@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 @Entity
 @Table(name = "ORDERS")
-public class Order extends IdEntity {
+public class Order  {
     @Id
     @SequenceGenerator(name="O_SEQ",sequenceName = "ORDER_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "O_SEQ")
