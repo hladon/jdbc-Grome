@@ -1,6 +1,6 @@
 package hibernate.lesson4;
 
-import hibernate.lesson4.Exceptions.WrongUserType;
+
 import hibernate.lesson4.model.User;
 
 public class UserController  {

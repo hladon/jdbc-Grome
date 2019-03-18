@@ -6,13 +6,14 @@ import hibernate.lesson4.model.Order;
 import java.util.Date;
 import java.util.List;
 
+
 public class OrderService {
 
     private static OrderRepository orderRepository=new OrderRepository();
     private static RoomRepository roomRepository=new RoomRepository();
     private static UserRepository userRepository=new UserRepository();
 
-    public static void bookRoom(long roomId, long userId) throws Exception {
+    public static Order createOrder(long roomId, long userId) {
         Order order=new Order();
         order.setUserOrder(userRepository.findById(userId));
         order.setRoom(roomRepository.findById(roomId));
@@ -20,16 +21,18 @@ public class OrderService {
         order.setDateFrom(reservation);
         order.setUserOrder(userRepository.findById(userId));
         order.setDateTo(new Date(reservation.getTime()+604800000));
-        orderRepository.save(order);
-//        TODO
+        return order;
     }
 
+    public static List<Order> findOrders(long roomId, long userId) throws Exception{
 
-
-    public static void cancelReservation(long roomId, long userId) throws Exception {
-        List<Order> list= orderRepository.findByQuery("SELECT*FROM ORDERS WHERE ROOM_ID="+roomId+" AND USER_ID="+userId);
-        for (Order order: list){
-            orderRepository.delete(order);
+        String query="SELECT*FROM USERS WHERE ROOM_ID="+roomId+" AND USER_ID=" + userId;
+        List<Order> orders = orderRepository.findByQuery(query);
+        if (orderRepository.findByQuery(query).isEmpty()){
+            throw new Exception("Such order does not exist!");
         }
+        return orders;
+
     }
+
 }

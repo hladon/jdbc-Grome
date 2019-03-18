@@ -1,36 +1,39 @@
 package hibernate.lesson4;
 
 
+import hibernate.lesson4.model.Filter;
+import hibernate.lesson4.model.Hotel;
+import hibernate.lesson4.model.Room;
+import hibernate.lesson4.model.User;
+
+import java.util.Date;
+
 public class Demo {
     public static void main(String[] args) throws Exception {
-        Session controler = new Session();
-        controler.login("Vlad", "trew");
+        UserController.login("Vlad", "trew");
 
-//        System.out.println(controler.findHotelByName("Hilton").toString());
-//        System.out.println(controler.findHotelByName("Avenue").toString());
-//        System.out.println(controler.findHotelByName("Relax").toString());
+        System.out.println(HotelController.findHotelByName("Hilton").toString());
+        System.out.println(HotelController.findHotelByName("Avenue").toString());
+        System.out.println(HotelController.findHotelByName("Relax").toString());
 
-//        System.out.println(controler.findHotelByCity("Kiev").toString());
-//        System.out.println(controler.findHotelByCity("rome").toString());
-//        System.out.println(controler.findHotelByCity("lvov").toString());
+        System.out.println(HotelController.findHotelByCity("Kiev").toString());
+        System.out.println(HotelController.findHotelByCity("rome").toString());
+        System.out.println(HotelController.findHotelByCity("lvov").toString());
 
-//        Filter filter=new Filter("Ukraine","Kiev",null,1,true,false,new Date());
-//        System.out.println(controler.findRooms(filter).toString());
+        Filter filter = new Filter("Ukraine", "Kiev", null, 1, true, false, new Date());
+        System.out.println(RoomController.findRooms(filter).toString());
 
-//        User user=new User(8,"Vasil","rewt","Ukraine",UserType.USER);
-//        System.out.println(controler.registerUser(user));
+        User user = new User();
+        System.out.println(UserController.registerUser(user));
 
-//        controler.bookRoom(2,1);
+        RoomController.bookRoom(1, 1);
 
-//        controler.cancelReservation(2,1);
+        RoomController.cancelReservation(1, 1);
 
-//        Hotel hotel=new Hotel(18,"Stelar","China","Beijing","MaoDezdun");
-//        controler.addHotel(hotel);
-//        controler.deleteHotel(18);
+        Hotel hotel = new Hotel();
 
-//        Room room=new Room(13,2,200,true,false,new Date(),hotel);
-//        controler.addRoom(room);
-//        controler.deleteRoom(13);
+        Room room = new Room();
+
 
     }
 }
