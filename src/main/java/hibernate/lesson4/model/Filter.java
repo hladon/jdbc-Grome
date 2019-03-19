@@ -11,6 +11,14 @@ public class Filter {
     private boolean petsAllowed;
     private Date dateAvailableFrom;
 
+    public void setHotel(String hotel) {
+        this.hotel = hotel;
+    }
+
+    public void setDateAvailableFrom(Date dateAvailableFrom) {
+        this.dateAvailableFrom = dateAvailableFrom;
+    }
+
     public Filter(String country, String city, String hotel, int numberOfGuests, boolean breakfastIncluded, boolean petsAllowed, Date dateAvailableFrom) {
         this.hotel = hotel;
         this.country = country;
@@ -67,10 +75,6 @@ public class Filter {
 
     public void setPetsAllowed(boolean petsAllowed) {
         this.petsAllowed = petsAllowed;
-    }
-
-    public Date getDateAvaibleFrom() {
-        return dateAvailableFrom;
     }
 
     public void setDateAvaibleFrom(Date dateAvaibleFrom) {

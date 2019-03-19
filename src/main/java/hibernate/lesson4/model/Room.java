@@ -18,7 +18,7 @@ public class Room {
     private boolean breakfastIncluded;
     @Column(name = "PETS_ALLOWED")
     private boolean petsAllowed;
-    @Column(name = "Guests")
+    @Column(name = "DATE_AVAILABLE_FROM")
     private Date dateAvailableFrom;
     @Column(name = "HOTELS")
     private Hotel hotel;

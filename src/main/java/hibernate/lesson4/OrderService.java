@@ -24,14 +24,14 @@ public class OrderService {
         return order;
     }
 
-    public static List<Order> findOrders(long roomId, long userId) throws Exception{
+    public static Order findOrders(long roomId, long userId) throws Exception{
 
         String query="SELECT*FROM USERS WHERE ROOM_ID="+roomId+" AND USER_ID=" + userId;
         List<Order> orders = orderRepository.findByQuery(query);
         if (orderRepository.findByQuery(query).isEmpty()){
             throw new Exception("Such order does not exist!");
         }
-        return orders;
+        return orders.get(0);
 
     }
 

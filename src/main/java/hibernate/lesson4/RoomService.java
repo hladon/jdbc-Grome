@@ -3,6 +3,7 @@ package hibernate.lesson4;
 
 
 
+import hibernate.lesson4.model.Filter;
 import hibernate.lesson4.model.Order;
 import hibernate.lesson4.model.Room;
 import org.hibernate.SessionFactory;
@@ -10,10 +11,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 
-import java.util.Date;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
 
 
 public class RoomService  {
@@ -42,6 +41,7 @@ public class RoomService  {
             System.err.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();
+            throw e;
         } finally {
             if (session != null)
                 session.close();
@@ -53,31 +53,59 @@ public class RoomService  {
     public static void cancelReservation(long roomId, long userId) throws Exception {
         Room room = repository.findById(roomId);
         if (room == null)
-            return;
-        room.setDateAvailableFrom(new Date());
-        repository.delete(roomId);
-        repository.save(room);
-        OrderService.deleteOrder(roomId, userId);
+            throw new Exception("Room"+roomId+"don`t exist!");
+        Order order=OrderService.findOrders(roomId,userId);
+        room.setDateAvailableFrom(order.getDateFrom());
+        Session session=null;
+        Transaction transaction=null;
+        try {
+            SessionFactory sf=new Configuration().configure().buildSessionFactory();
+            session= sf.openSession();
+            transaction=session.getTransaction();
+            transaction.begin();
+            session.delete(order);
+            session.update(room);
+            transaction.commit();
+        }catch (Exception e){
+            System.err.println("Cancel booking is failed");
+            System.err.println(e.getMessage());
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        } finally {
+            if (session != null)
+                session.close();
+                    }
     }
 
 
-    public static Set<Room> findRooms(Filter filter) throws Exception {
-        List<Room> list = repository.getList();
-        Set<Hotel> hotels = HotelService.findHotelByCity(filter.getCity());
-        hotels.addAll(HotelService.findHotelByName(filter.getHotel()));
-        hotels.addAll(HotelService.findHotelByCountry(filter.getCountry()));
-        Set<Room> rooms = new HashSet<>();
-        for (Room room : list) {
-            if (room.getDateAvailableFrom().before(filter.getDateAvaibleFrom()) &&
-                    room.isBreakfastIncluded() == filter.isBreakfastIncluded() &&
-                    room.isPetsAllowed() == filter.isPetsAllowed() &&
-                    room.getNumberOfGuests() >= filter.getNumberOfGuests() &&
-                    checkHotelForRoom(room, hotels)) {
-                rooms.add(room);
-            }
+    public static List<Room> findRooms(Filter filter) throws Exception {
+        return repository.findByQuery(createQuery(filter));
 
+    }
+    private static String createQuery(Filter filter){
+        String query="SELECT * FROM ROOMS WHERE ";
+        if (filter.isPetsAllowed()){
+            query+=" PETS_ALLOWED=1";
+        }else {
+            query+=" PETS_ALLOWED=0";
         }
-        return rooms;
+        if (filter.getCountry()!=null)
+            query+=" AND COUNTRY="+filter.getCountry();
+        if (filter.getCity()!=null)
+            query+=" AND CITY="+filter.getCity();
+        if (filter.getHotel()!=null)
+            query+=" AND HOTEL="+filter.getHotel();
+        if (filter.getDateAvailableFrom()!=null){
+            query+=" AND DATE_AVAILABLE_FROM <"+filter.getDateAvailableFrom();
+        }
+        if (filter.isBreakfastIncluded()){
+            query+=" AND BREAKFAST=1";
+        }else {
+            query+=" AND BREAKFAST=0";
+        }
+        query+=" AND GUESTS_NUMBER>="+filter.getNumberOfGuests();
+        return query;
     }
 
 
