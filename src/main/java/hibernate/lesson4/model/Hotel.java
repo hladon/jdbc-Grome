@@ -6,20 +6,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "HOTELS")
 public class Hotel  {
-    @Id
-    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
-    @Column(name = "ID",unique = true,nullable = false)
+
     private long id;
-    @Column(name = "NAME")
     private String name;
-    @Column(name = "COUNTRY")
     private String country;
-    @Column(name = "CITY")
     private String city;
-    @Column(name = "STREET")
     private String street;
-    @Column(name = "ROOMS")
     private List<Room> rooms;
 
 
@@ -45,7 +37,10 @@ public class Hotel  {
         return id + "," + name + "," + country + "," + city + "," + street;
 
     }
-
+    @Id
+    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
+    @Column(name = "ID",unique = true,nullable = false)
     public long getId() {
         return id;
     }
@@ -53,7 +48,7 @@ public class Hotel  {
     public void setId(long id) {
         this.id = id;
     }
-
+    @Column(name = "NAME")
     public String getName() {
         return name;
     }
@@ -61,7 +56,7 @@ public class Hotel  {
     public void setName(String name) {
         this.name = name;
     }
-
+    @Column(name = "COUNTRY")
     public String getCountry() {
         return country;
     }
@@ -69,7 +64,7 @@ public class Hotel  {
     public void setCountry(String country) {
         this.country = country;
     }
-
+    @Column(name = "CITY")
     public String getCity() {
         return city;
     }
@@ -77,7 +72,7 @@ public class Hotel  {
     public void setCity(String city) {
         this.city = city;
     }
-
+    @Column(name = "STREET")
     public String getStreet() {
         return street;
     }
@@ -85,6 +80,7 @@ public class Hotel  {
     public void setStreet(String street) {
         this.street = street;
     }
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="hotel")
     public List<Room> getRooms() {
         return rooms;
     }

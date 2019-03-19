@@ -5,48 +5,44 @@ import java.util.Date;
 @Entity
 @Table(name ="ROOMS" )
 public class Room {
+
+    private long id;
+    private int numberOfGuests;
+    private double price;
+    private boolean breakfastIncluded;
+    private boolean petsAllowed;
+    private Date dateAvailableFrom;
+    private Hotel hotel;
+
     @Id
     @SequenceGenerator(name="R_SEQ",sequenceName = "ROOM_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "R_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
-    private long id;
-    @Column(name = "GUESTS_NUMBER")
-    private int numberOfGuests;
-    @Column(name = "PRICE")
-    private double price;
-    @Column(name = "BREAKFAST")
-    private boolean breakfastIncluded;
-    @Column(name = "PETS_ALLOWED")
-    private boolean petsAllowed;
-    @Column(name = "DATE_AVAILABLE_FROM")
-    private Date dateAvailableFrom;
-    @Column(name = "HOTELS")
-    private Hotel hotel;
-
     public long getId() {
         return id;
     }
-
+    @Column(name = "GUESTS_NUMBER")
     public int getNumberOfGuests() {
         return numberOfGuests;
     }
-
+    @Column(name = "PRICE")
     public double getPrice() {
         return price;
     }
-
-    public boolean isBreakfastIncluded() {
+    @Column(name = "BREAKFAST")
+    public boolean getBreakfastIncluded() {
         return breakfastIncluded;
     }
-
-    public boolean isPetsAllowed() {
+    @Column(name = "PETS_ALLOWED")
+    public boolean getPetsAllowed() {
         return petsAllowed;
     }
-
+    @Column(name = "DATE_AVAILABLE_FROM")
     public Date getDateAvailableFrom() {
         return dateAvailableFrom;
     }
-
+    @ManyToOne
+    @JoinColumn(name="HOTEL", nullable=false)
     public Hotel getHotel() {
         return hotel;
     }

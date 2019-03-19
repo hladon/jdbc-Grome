@@ -8,23 +8,19 @@ import java.util.Date;
 @Entity
 @Table(name = "ORDERS")
 public class Order  {
+
+    private long id;
+
+    private User userOrder;
+    private Room room;
+    private Date dateFrom;
+    private Date dateTo;
+    private double moneyPaid;
+
     @Id
     @SequenceGenerator(name="O_SEQ",sequenceName = "ORDER_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "O_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
-    private long id;
-    @Column(name = "USER_ID")
-    private User userOrder;
-    @Column(name = "ROOM_ID")
-    private Room room;
-    @Column(name = "DATE_FROM")
-    private Date dateFrom;
-    @Column(name = "DATE_TO")
-    private Date dateTo;
-    @Column(name = "MONEY_PAID")
-    private double moneyPaid;
-
-
     public long getId() {
         return id;
     }
@@ -52,23 +48,24 @@ public class Order  {
     public void setMoneyPaid(double moneyPaid) {
         this.moneyPaid = moneyPaid;
     }
-
+    @ManyToOne
+    @JoinColumn(name="USER_ID", nullable=false)
     public User getUserOrder() {
         return userOrder;
     }
-
+    @Column(name = "ROOM_ID")
     public Room getRoom() {
         return room;
     }
-
+    @Column(name = "DATE_FROM")
     public Date getDateFrom() {
         return dateFrom;
     }
-
+    @Column(name = "DATE_TO")
     public Date getDateTo() {
         return dateTo;
     }
-
+    @Column(name = "MONEY_PAID")
     public double getMoneyPaid() {
         return moneyPaid;
     }
