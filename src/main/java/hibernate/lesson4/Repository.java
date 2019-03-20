@@ -21,6 +21,7 @@ public abstract class Repository <T> {
             transaction.begin();
             session.save(object);
             transaction.commit();
+            System.out.println("Save is done");
         }catch (Exception e) {
             System.err.println("Save is failed");
             System.err.println(e.getMessage());
@@ -64,8 +65,8 @@ public abstract class Repository <T> {
             tr = session.getTransaction();
             tr.begin();
             session.update(object);
-
             tr.commit();
+            System.err.println("Update is done");
         } catch (Exception e) {
             System.err.println("Update is failed");
             System.err.println(e.getMessage());

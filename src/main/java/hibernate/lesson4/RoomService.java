@@ -91,14 +91,14 @@ public class RoomService  {
             query+=" PETS_ALLOWED=0";
         }
         if (filter.getCountry()!=null)
-            query+=" AND COUNTRY="+filter.getCountry();
+            query+=" AND COUNTRY=\'"+filter.getCountry()+"\'";
         if (filter.getCity()!=null)
-            query+=" AND CITY="+filter.getCity();
+            query+=" AND CITY=\'"+filter.getCity()+"\'";
         if (filter.getHotel()!=null)
-            query+=" AND HOTEL="+filter.getHotel();
-        if (filter.getDateAvailableFrom()!=null){
-            query+=" AND DATE_AVAILABLE_FROM <"+filter.getDateAvailableFrom();
-        }
+            query+=" AND HOTEL=\'"+filter.getHotel()+"\'";
+//        if (filter.getDateAvailableFrom()!=null){
+//            query+=" AND DATE_AVAILABLE_FROM <"+filter.getDateAvailableFrom();
+//        }
         if (filter.isBreakfastIncluded()){
             query+=" AND BREAKFAST=1";
         }else {
