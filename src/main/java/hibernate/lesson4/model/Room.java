@@ -15,7 +15,7 @@ public class Room {
     private Hotel hotel;
 
     @Id
-    @SequenceGenerator(name="R_SEQ",sequenceName = "ROOM_SEQ",allocationSize = 1)
+    @SequenceGenerator(name="R_SEQ",sequenceName = "ROOM_SQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "R_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
     public long getId() {

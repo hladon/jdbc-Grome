@@ -24,6 +24,28 @@ public class Order  {
     public long getId() {
         return id;
     }
+    @ManyToOne
+    @JoinColumn(name="USER_ID", nullable=false)
+    public User getUserOrder() {
+        return userOrder;
+    }
+    @OneToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name ="HOTEL_ID" )
+    public Room getRoom() {
+        return room;
+    }
+    @Column(name = "DATE_FROM")
+    public Date getDateFrom() {
+        return dateFrom;
+    }
+    @Column(name = "DATE_TO")
+    public Date getDateTo() {
+        return dateTo;
+    }
+    @Column(name = "MONEY_PAID")
+    public double getMoneyPaid() {
+        return moneyPaid;
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -48,28 +70,6 @@ public class Order  {
     public void setMoneyPaid(double moneyPaid) {
         this.moneyPaid = moneyPaid;
     }
-    @ManyToOne
-    @JoinColumn(name="USER_ID", nullable=false)
-    public User getUserOrder() {
-        return userOrder;
-    }
-    @Column(name = "ROOM_ID")
-    public Room getRoom() {
-        return room;
-    }
-    @Column(name = "DATE_FROM")
-    public Date getDateFrom() {
-        return dateFrom;
-    }
-    @Column(name = "DATE_TO")
-    public Date getDateTo() {
-        return dateTo;
-    }
-    @Column(name = "MONEY_PAID")
-    public double getMoneyPaid() {
-        return moneyPaid;
-    }
-
     @Override
     public String toString() {
         return id + "," + userOrder.getId() + "," + room.getId() + "," + dateFrom.getTime() + "," + dateTo.getTime() + "," + moneyPaid;

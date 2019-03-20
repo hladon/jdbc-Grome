@@ -30,7 +30,7 @@ public abstract class Repository <T> {
             if (session != null)
                 session.close();
         }
-        System.out.println("Save is done");
+
         return object;
     }
 
@@ -44,6 +44,7 @@ public abstract class Repository <T> {
             session.delete(object);
 
             tr.commit();
+            System.out.println("Delete is done");
         } catch (Exception e) {
             System.err.println("Delete is failed");
             System.err.println(e.getMessage());
@@ -53,7 +54,7 @@ public abstract class Repository <T> {
             if (session != null)
                 session.close();
         }
-        System.out.println("Delete is done");
+
     }
     public T update(T object) {
         Session session = null;
@@ -74,7 +75,6 @@ public abstract class Repository <T> {
             if (session != null)
                 session.close();
         }
-        System.out.println("Update is done");
 
         return object;
     }

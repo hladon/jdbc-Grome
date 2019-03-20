@@ -38,7 +38,7 @@ public class Hotel  {
 
     }
     @Id
-    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
+    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
     public long getId() {

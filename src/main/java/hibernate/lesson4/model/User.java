@@ -21,8 +21,8 @@ public class User {
 
 
     @Id
-    @SequenceGenerator(name="H_SEQ",sequenceName = "HOTEL_SEQ",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "H_SEQ")
+    @SequenceGenerator(name="U_SEQ",sequenceName = "USER_SQ",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "U_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
     public long getId() {
         return id;
@@ -43,7 +43,7 @@ public class User {
     public UserType getType() {
         return type;
     }
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="user")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="userOrder",fetch = FetchType.LAZY)
     public List<Order> getOrders() {
         return orders;
     }
