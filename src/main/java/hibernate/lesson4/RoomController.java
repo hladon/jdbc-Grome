@@ -3,6 +3,7 @@ package hibernate.lesson4;
 import hibernate.lesson4.model.Filter;
 import hibernate.lesson4.model.Room;
 
+import java.util.Date;
 import java.util.List;
 
 public class RoomController {
@@ -13,10 +14,10 @@ public class RoomController {
     }
 
 
-    public static void bookRoom(long roomId, long userId) throws Exception {
+    public static void bookRoom(long roomId, long userId,Date dateFrom,Date dateTo) throws Exception {
         if (Session.getLogedUser() == null)
             throw new Exception("User not logged!");
-        RoomService.bookRoom(roomId, userId);
+        RoomService.bookRoom(roomId, userId, dateFrom,dateTo);
     }
 
     public static void cancelReservation(long roomId, long userId) throws Exception {

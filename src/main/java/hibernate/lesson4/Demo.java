@@ -26,7 +26,7 @@ public class Demo {
         UserController.login("Vadim","1111");
 //        System.out.println(HotelController.findHotelByCity("Kiyv"));
 //        System.out.println(HotelController.findHotelByName("Hilton"));
-        Filter filter=new Filter(null,"Kiyv","Hilton",2,true,false,new Date());
+        Filter filter=new Filter(null,"Kiyv","Hilton",2,true,false,null);
         Room room1=new Room();
         room1.setBreakfastIncluded(true);
         room1.setDateAvailableFrom(new Date(19/03/2019));
@@ -45,10 +45,11 @@ public class Demo {
 //        RoomRepository roomRepository=new RoomRepository();
 //        roomRepository.save(room1);
 //        roomRepository.save(room2);
-        for (Room room:RoomController.findRooms(filter)){
-            System.out.println(room);
-        }
-
-
+//        for (Room room:RoomController.findRooms(filter)){
+//            System.out.println(room);
+//        }
+//    RoomController.bookRoom(1,2,new Date(),new Date(22/03/2019));
+//        RoomController.cancelReservation(1,2);
+        UserController.logout();
     }
 }

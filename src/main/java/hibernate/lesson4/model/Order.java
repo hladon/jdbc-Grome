@@ -18,7 +18,7 @@ public class Order  {
     private double moneyPaid;
 
     @Id
-    @SequenceGenerator(name="O_SEQ",sequenceName = "ORDER_SEQ",allocationSize = 1)
+    @SequenceGenerator(name="O_SEQ",sequenceName = "O_SEQ",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "O_SEQ")
     @Column(name = "ID",unique = true,nullable = false)
     public long getId() {
@@ -30,7 +30,7 @@ public class Order  {
         return userOrder;
     }
     @OneToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name ="HOTEL_ID" )
+    @JoinColumn(name ="ROOM_ID" )
     public Room getRoom() {
         return room;
     }
