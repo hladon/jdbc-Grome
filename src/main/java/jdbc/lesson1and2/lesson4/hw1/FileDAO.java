@@ -8,13 +8,8 @@ import java.util.List;
 
 public class FileDAO extends DAO<File> {
 
-
-
-    public FileDAO(Connection connection) {
-        super(connection);
-    }
-
     public File save(File file) throws SQLException {
+        getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
 
             preparedStatement.setLong(1, file.getId());
@@ -34,6 +29,7 @@ public class FileDAO extends DAO<File> {
 
 
     public File update(File file) throws SQLException {
+        getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE FILES SET NAME=? ," +
                 " FORMAT=?,FILE_SIZE=?,STORAGE=? WHERE ID=?")) {
 
@@ -58,6 +54,7 @@ public class FileDAO extends DAO<File> {
     }
 
     public  List<File> getFilesByStorage(Storage storage) throws SQLException{
+        getConnection();
         List<File> list=new LinkedList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT*FROM FILES WHERE STORAGE=?")) {
 
@@ -84,7 +81,7 @@ public class FileDAO extends DAO<File> {
 
 
     protected File getObject(ResultSet resultSet) throws SQLException {
-        StorageDAO storageDAO = new StorageDAO(connection);
+        StorageDAO storageDAO = new StorageDAO();
         return new File(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3), resultSet.getLong(4),
                 storageDAO.findById(resultSet.getLong(5)));
     }
