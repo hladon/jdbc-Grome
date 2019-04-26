@@ -3,15 +3,15 @@ package jdbc.lesson1and2.lesson4.hw1;
 import java.sql.*;
 
 abstract class DAO<T> {
+    private static final String DB_URL = "jdbc:oracle:thin:@gromcode-lessons.ctmtirr3ce0v.us-east-2.rds.amazonaws.com:1521:orcl";
+    private static final String USER = "main";
+    private static final String PASS = "QWer1234";
 
+    public static Connection connection = null;
 
-    protected Connection connection = null;
-
-    public DAO(Connection connection) {
-        this.connection = connection;
-    }
 
     public void deleteQuery( String query) throws SQLException {
+        getConnection();
         try (Statement statement = connection.createStatement()) {
 
             statement.execute(query);
@@ -23,6 +23,7 @@ abstract class DAO<T> {
     }
 
     public T qetResult(String query) throws SQLException{
+        getConnection();
         try (Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(query);
@@ -41,5 +42,10 @@ abstract class DAO<T> {
 
     abstract T getObject(ResultSet resultSet) throws SQLException;
 
+    public static void getConnection() throws SQLException {
+        if(connection==null)
+        connection= DriverManager.getConnection(DB_URL, USER, PASS);
+
+    }
 
 }

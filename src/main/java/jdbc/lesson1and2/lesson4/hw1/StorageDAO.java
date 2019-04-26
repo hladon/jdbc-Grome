@@ -6,11 +6,6 @@ import java.util.Arrays;
 public class StorageDAO extends DAO<Storage> {
 
 
-
-    public StorageDAO(Connection connection) {
-        super(connection);
-    }
-
     public Storage save(Storage storage) throws SQLException{
         try (PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO STORAGE VALUES (?,?,?,?)")) {
 
