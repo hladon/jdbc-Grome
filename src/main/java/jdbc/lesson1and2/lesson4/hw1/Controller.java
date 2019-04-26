@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Controller {
 
-    private static final String DB_URL = "";
+
 
     private static final String USER = "";
     private static final String PASS = "";
