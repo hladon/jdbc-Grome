@@ -7,17 +7,17 @@ public class StorageDAO extends DAO<Storage> {
 
 
     public Storage save(Storage storage) throws SQLException{
-        try (PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO STORAGE VALUES (?,?,?,?)")) {
+        try (PreparedStatement preparedStatement=getConnection().prepareStatement("INSERT INTO STORAGE VALUES (?,?,?,?)")) {
 
             preparedStatement.setLong(1,storage.getId());
-            preparedStatement.setString(2, Arrays.toString(storage.getFormatsSupported()));
+            preparedStatement.setString(2, arrayToString(storage.getFormatsSupported()));
             preparedStatement.setString(3,storage.getStorageCountry());
             preparedStatement.setLong(4,storage.getStorageMaxSize());
 
             preparedStatement.execute();
 
         } catch (SQLException sql) {
-            connection.rollback();
+
             throw sql;
         }
 
@@ -25,7 +25,7 @@ public class StorageDAO extends DAO<Storage> {
     }
 
     public Storage update(Storage storage) throws SQLException{
-        try (    PreparedStatement preparedStatement=connection.prepareStatement("UPDATE STORAGE SET " +
+        try (    PreparedStatement preparedStatement=getConnection().prepareStatement("UPDATE STORAGE SET " +
                      " FORMATS_SUPPORTED=?,STORAGE_COUNTRY=?,STORAGE_MAX_SIZE=? WHERE ID=?")) {
 
             preparedStatement.setString(1,arrayToString(storage.getFormatsSupported()));
@@ -36,7 +36,7 @@ public class StorageDAO extends DAO<Storage> {
             preparedStatement.execute();
 
         }catch (SQLException sql) {
-            connection.rollback();
+
             throw sql;
         }
         return storage;
@@ -54,13 +54,15 @@ public class StorageDAO extends DAO<Storage> {
     }
     private static String arrayToString(String[] theAray) {
         String result = "";
+
         for (int i = 0; i < theAray.length; i++) {
-            if (i > 0) {
+            result = result + theAray[i];
+            if (i!=theAray.length-1) {
                 result = result + ",";
             }
-            String item = theAray[i];
-            result = result + item;
+
         }
+
          return result;
     }
 
