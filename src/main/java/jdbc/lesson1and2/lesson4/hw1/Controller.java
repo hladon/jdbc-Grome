@@ -1,9 +1,12 @@
 package jdbc.lesson1and2.lesson4.hw1;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Controller {
+    private static FileDAO fileDAO=new FileDAO();
+    private static StorageDAO storageDAO=new StorageDAO();
 
     public static void put(Storage storage, File file) throws Exception {
         Service.put(storage, file);
@@ -24,5 +27,26 @@ public class Controller {
 
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
         Service.transferFile(storageFrom, storageTo, id);
+    }
+
+    public static File findFileById(long id) throws SQLException {
+        return fileDAO.findById(id);
+    }
+
+    public static Storage findStorageById(long id) throws SQLException {
+        return storageDAO.findById(id);
+    }
+
+    public static void update(File file) throws SQLException {
+        fileDAO.update(file);
+    }
+
+    public static void update(Storage storage) throws SQLException {
+
+        storageDAO.update(storage);
+    }
+
+    public static List<File> getFilesByStorage(Storage storage) throws SQLException {
+        return fileDAO.getFilesByStorage(storage);
     }
 }

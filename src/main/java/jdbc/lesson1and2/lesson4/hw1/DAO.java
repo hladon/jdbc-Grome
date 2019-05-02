@@ -7,7 +7,7 @@ abstract class DAO<T> {
     private static final String USER = "main";
     private static final String PASS = "QWer1234";
 
-    public static Connection connection = null;
+    protected static Connection connection = null;
 
 
     public void deleteQuery( String query) throws SQLException {
@@ -42,10 +42,10 @@ abstract class DAO<T> {
 
     abstract T getObject(ResultSet resultSet) throws SQLException;
 
-    public static void getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         if(connection==null)
         connection= DriverManager.getConnection(DB_URL, USER, PASS);
-
+        return connection;
     }
 
 }
