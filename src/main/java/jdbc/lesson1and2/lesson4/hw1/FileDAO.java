@@ -10,19 +10,22 @@ public class FileDAO extends DAO<File> {
 
 
     public File save(File file) throws SQLException {
-        getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
 
             preparedStatement.setLong(1, file.getId());
             preparedStatement.setString(2, file.getName());
             preparedStatement.setString(3, file.getFormat());
             preparedStatement.setLong(4, file.getSize());
-            preparedStatement.setLong(5, file.getStorage().getId());
-
+            if (file.getStorage() == null) {
+                preparedStatement.setNull(5, Types.NUMERIC);
+            } else {
+                preparedStatement.setLong(5, file.getStorage().getId());
+            }
             preparedStatement.execute();
 
-        }catch (SQLException sql) {
-            connection.rollback();
+        } catch (SQLException sql) {
+
             throw sql;
         }
         return file;
@@ -30,53 +33,47 @@ public class FileDAO extends DAO<File> {
 
 
     public File update(File file) throws SQLException {
-        getConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE FILES SET NAME=? ," +
-                " FORMAT=?,FILE_SIZE=?,STORAGE=? WHERE ID=?")) {
-
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE FILES SET NAME=? ," +
+                " FORMAT=?,FILE_SIZE=?,STORAGE_ID=? WHERE ID=?")) {
             preparedStatement.setString(1, file.getName());
             preparedStatement.setString(2, file.getFormat());
             preparedStatement.setLong(3, file.getSize());
-            if (file.getStorage()==null){
+            if (file.getStorage() == null) {
                 preparedStatement.setNull(4, Types.NUMERIC);
-            }else {
+            } else {
                 preparedStatement.setLong(4, file.getStorage().getId());
             }
-
             preparedStatement.setLong(5, file.getId());
-
             preparedStatement.execute();
 
-        }catch (SQLException sql) {
-            connection.rollback();
+        } catch (SQLException sql) {
             throw sql;
         }
         return file;
     }
 
-    public  List<File> getFilesByStorage(Storage storage) throws SQLException{
-        getConnection();
-        List<File> list=new LinkedList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT*FROM FILES WHERE STORAGE=?")) {
+    public List<File> getFilesByStorage(Storage storage) throws SQLException {
+        List<File> list = new LinkedList<>();
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT*FROM FILES WHERE STORAGE_ID=?")) {
 
             preparedStatement.setLong(1, storage.getId());
 
-            ResultSet resultSet=preparedStatement.executeQuery();
-        while (resultSet.next()){
-            list.add(getObject(resultSet));
-        }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                list.add(getObject(resultSet));
+            }
 
         }
         return list;
     }
 
     public void delete(long id) throws SQLException {
-        String query="DELETE FROM FILES WHERE ID="+id;
+        String query = "DELETE FROM FILES WHERE ID=" + id;
         deleteQuery(query);
     }
 
     public File findById(long id) throws SQLException {
-        String query="SELECT*FROM FILES WHERE ID="+id;
+        String query = "SELECT*FROM FILES WHERE ID=" + id;
         return qetResult(query);
     }
 

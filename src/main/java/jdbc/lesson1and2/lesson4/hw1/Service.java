@@ -118,7 +118,7 @@ public class Service {
             }
         }
         if (!allowed) {
-            throw new Exception("Storage " + storage.getId() + "don`t support type of file " + file.getId());
+            throw new Exception("Storage " + storage.getId() + " don`t support type of file " + file.getId());
         }
     }
 

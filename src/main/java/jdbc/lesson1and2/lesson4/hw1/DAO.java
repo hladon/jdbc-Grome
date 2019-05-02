@@ -7,24 +7,22 @@ abstract class DAO<T> {
     private static final String USER = "main";
     private static final String PASS = "QWer1234";
 
-    protected static Connection connection = null;
+   protected static Connection connection = null;
 
 
     public void deleteQuery( String query) throws SQLException {
-        getConnection();
-        try (Statement statement = connection.createStatement()) {
+
+        try (Statement statement = getConnection().createStatement()) {
 
             statement.execute(query);
 
         }catch (SQLException sql) {
-            connection.rollback();
             throw sql;
         }
     }
 
     public T qetResult(String query) throws SQLException{
-        getConnection();
-        try (Statement statement = connection.createStatement()) {
+        try (Statement statement = getConnection().createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -43,7 +41,6 @@ abstract class DAO<T> {
     abstract T getObject(ResultSet resultSet) throws SQLException;
 
     public static Connection getConnection() throws SQLException {
-        if(connection==null)
         connection= DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }

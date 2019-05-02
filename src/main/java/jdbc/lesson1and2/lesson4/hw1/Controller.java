@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Controller {
-    private static FileDAO fileDAO=new FileDAO();
     private static StorageDAO storageDAO=new StorageDAO();
+    private static FileDAO fileDAO=new FileDAO();
 
     public static void put(Storage storage, File file) throws Exception {
         Service.put(storage, file);
@@ -42,11 +42,20 @@ public class Controller {
     }
 
     public static void update(Storage storage) throws SQLException {
-
         storageDAO.update(storage);
     }
 
     public static List<File> getFilesByStorage(Storage storage) throws SQLException {
         return fileDAO.getFilesByStorage(storage);
+    }
+
+    public static Storage save(Storage storage)throws SQLException{
+        storageDAO.save(storage);
+        return storage;
+    }
+
+    public static File save (File file) throws SQLException{
+        fileDAO.save(file);
+        return file;
     }
 }
