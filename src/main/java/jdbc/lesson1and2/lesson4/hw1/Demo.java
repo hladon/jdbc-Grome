@@ -22,7 +22,9 @@ public class Demo {
         list.add(file4);
         list2.add(file1);
         list2.add(file3);
-
+        Storage storage2=new Storage((long)19,formats1,"Denmark",4500);
+        FileDAO fileDAO=new FileDAO();
+        System.out.println(fileDAO.getStorageFreeSpace(storage2));
 //        Controller.save(storage);
 //        Controller.save(storage1);
 //        Controller.save(file1);
@@ -30,32 +32,32 @@ public class Demo {
 //        Controller.save(file3);
 //        Controller.save(file4);
 //        Controller.put(Controller.findStorageById(1),Controller.findFileById(1));
-        System.out.println(Controller.findFileById(1));
-        System.out.println(Controller.findStorageById(1));
-
-        Controller.delete(Controller.findStorageById(1),Controller.findFileById(1));
-        System.out.println(Controller.findFileById(1));
-        System.out.println(Controller.findStorageById(1));
-
-
-
-        Controller.putAll(Controller.findStorageById(1),list);
-        Controller.putAll(Controller.findStorageById(2),list2);
-        System.out.println(Controller.findFileById(1));
-        System.out.println(Controller.findStorageById(1));
-
-        Controller.transferAll(Controller.findStorageById(1),Controller.findStorageById(2));
-        System.out.println(Controller.findFileById(1));
-        System.out.println(Controller.findStorageById(1));
-
-        Controller.transferFile(Controller.findStorageById(2),Controller.findStorageById(1),1);
-        System.out.println(Controller.findFileById(1));
-        System.out.println(Controller.findStorageById(2));
-
-
-        for (File file:Controller.getFilesByStorage(Controller.findStorageById(1))){
-            System.out.println(file);
-        }
+//        System.out.println(Controller.findFileById(1));
+//        System.out.println(Controller.findStorageById(1));
+//
+//        Controller.delete(Controller.findStorageById(1),Controller.findFileById(1));
+//        System.out.println(Controller.findFileById(1));
+//        System.out.println(Controller.findStorageById(1));
+//
+//
+//
+//        Controller.putAll(Controller.findStorageById(1),list);
+//        Controller.putAll(Controller.findStorageById(2),list2);
+//        System.out.println(Controller.findFileById(1));
+//        System.out.println(Controller.findStorageById(1));
+//
+//        Controller.transferAll(Controller.findStorageById(1),Controller.findStorageById(2));
+//        System.out.println(Controller.findFileById(1));
+//        System.out.println(Controller.findStorageById(1));
+//
+//        Controller.transferFile(Controller.findStorageById(2),Controller.findStorageById(1),1);
+//        System.out.println(Controller.findFileById(1));
+//        System.out.println(Controller.findStorageById(2));
+//
+//
+//        for (File file:Controller.getFilesByStorage(Controller.findStorageById(1))){
+//            System.out.println(file);
+//        }
 
     }
 

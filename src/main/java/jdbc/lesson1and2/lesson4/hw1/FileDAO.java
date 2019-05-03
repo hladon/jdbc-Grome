@@ -10,9 +10,7 @@ public class FileDAO extends DAO<File> {
 
 
     public File save(File file) throws SQLException {
-
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
-
             preparedStatement.setLong(1, file.getId());
             preparedStatement.setString(2, file.getName());
             preparedStatement.setString(3, file.getFormat());
@@ -23,14 +21,12 @@ public class FileDAO extends DAO<File> {
                 preparedStatement.setLong(5, file.getStorage().getId());
             }
             preparedStatement.execute();
-
         } catch (SQLException sql) {
 
             throw sql;
         }
         return file;
     }
-
 
     public File update(File file) throws SQLException {
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("UPDATE FILES SET NAME=? ," +
@@ -45,24 +41,21 @@ public class FileDAO extends DAO<File> {
             }
             preparedStatement.setLong(5, file.getId());
             preparedStatement.execute();
-
         } catch (SQLException sql) {
             throw sql;
         }
         return file;
     }
 
+
     public List<File> getFilesByStorage(Storage storage) throws SQLException {
         List<File> list = new LinkedList<>();
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT*FROM FILES WHERE STORAGE_ID=?")) {
-
             preparedStatement.setLong(1, storage.getId());
-
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 list.add(getObject(resultSet));
             }
-
         }
         return list;
     }
@@ -75,6 +68,18 @@ public class FileDAO extends DAO<File> {
     public File findById(long id) throws SQLException {
         String query = "SELECT*FROM FILES WHERE ID=" + id;
         return qetResult(query);
+    }
+
+    public long getStorageFreeSpace(Storage storage) throws SQLException {
+        long usedSpace = 0;
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=?")) {
+            preparedStatement.setLong(1, storage.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                usedSpace = resultSet.getLong(1);
+            }
+        }
+        return storage.getStorageMaxSize() - usedSpace;
     }
 
 
