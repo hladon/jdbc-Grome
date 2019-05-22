@@ -9,36 +9,8 @@ abstract class DAO<T> {
 
     protected static Connection connection = null;
 
-    public void deleteQuery( String query) throws SQLException {
-
-        try (Statement statement = getConnection().createStatement()) {
-
-            statement.execute(query);
-
-        }catch (SQLException sql) {
-            throw sql;
-        }
-    }
-
-    public T qetResult(String query) throws SQLException{
-        try (Statement statement = getConnection().createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                return getObject(resultSet);
-            }
-        }catch (SQLException sql) {
-            throw sql;
-        }
-        return null;
-    }
-
-
-
-    abstract T getObject(ResultSet resultSet) throws SQLException;
-
     public static Connection getConnection() throws SQLException {
-
-        connection= DriverManager.getConnection(DB_URL, USER, PASS);
+        connection = DriverManager.getConnection(DB_URL, USER, PASS);
         return connection;
     }
 

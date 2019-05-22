@@ -8,64 +8,63 @@ public class Service {
 
 
     public static File put(Storage storage, File file) throws Exception {
-        checkRestrictions(storage,file);
+        checkRestrictions(storage, file);
         file.setStorage(storage);
         fileDAO.save(file);
         return file;
     }
 
     public static void putAll(Storage storage, List<File> files) throws Exception {
-        for (File file:files){
-            put(storage,file);
+        for (File file : files) {
+            checkRestrictions(storage, file);
         }
+        fileDAO.saveList(files);
     }
 
     public static void delete(Storage storage, File file) throws Exception {
-        if (file.getStorage().equals(storage)){
+        if (file.getStorage().equals(storage)) {
             file.setStorage(null);
             fileDAO.update(file);
         }
     }
+
     public static void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
-        File file=fileDAO.findById(id);
-        transfer(storageFrom,storageTo,file);
+        File file = fileDAO.findById(id);
+        transfer(storageFrom, storageTo, file);
     }
 
     public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
-        List<File> list=fileDAO.getFilesByStorage(storageFrom);
-        for (File file:list){
-            transfer(storageFrom,storageTo,file);
+        List<File> list = fileDAO.getFilesByStorage(storageFrom);
+        for (File file : list) {
+            transfer(storageFrom, storageTo, file);
         }
     }
 
-    private static void transfer(Storage storageFrom, Storage storageTo,File file) throws Exception{
-        if (file==null||!file.getStorage().equals(storageFrom)){
-            throw new Exception("File "+file.getId()+" don`t exist in storage "+storageFrom.getId() );
+    private static void transfer(Storage storageFrom, Storage storageTo, File file) throws Exception {
+        if (file == null || !file.getStorage().equals(storageFrom)) {
+            throw new Exception("File " + file.getId() + " don`t exist in storage " + storageFrom.getId());
         }
-        checkRestrictions(storageTo,file);
+        checkRestrictions(storageTo, file);
         file.setStorage(storageTo);
         fileDAO.update(file);
     }
 
 
     private static void checkRestrictions(Storage storage, File file) throws Exception {
-        boolean allowed = false;
-        if (storage == null || file == null) {
-            throw new Exception("Wrong input");
-        }
         if (fileDAO.getStorageFreeSpace(storage) < file.getSize()) {
             System.out.println("File to big for this storage");
             throw new Exception("File " + file.getId() + " to big for storage " + storage.getId());
         }
+        File fileInStorage = fileDAO.findById(file.getId());
+        if (fileInStorage == null || !fileInStorage.equals(file)) {
+            throw new Exception("File " + file.getId() + " don`t exist in storage ");
+        }
         for (String type : storage.getFormatsSupported()) {
             if (file.getFormat().equalsIgnoreCase(type)) {
-                allowed = true;
-                break;
+                return;
             }
         }
-        if (!allowed) {
-            throw new Exception("Storage " + storage.getId() + " don`t support type of file " + file.getId());
-        }
+        throw new Exception("Storage " + storage.getId() + " don`t support type of file " + file.getId());
     }
 
 }

@@ -1,5 +1,7 @@
 package jdbc.lesson1and2.lesson4.hw1;
 
+import java.util.Objects;
+
 public class File {
     private long id;
     private String name;
@@ -64,5 +66,21 @@ public class File {
                 ", size=" + size +
                 ", storage=" + storage +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        File file = (File) o;
+        return id == file.id &&
+                size == file.size &&
+                Objects.equals(name, file.name) &&
+                Objects.equals(format, file.format);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, format, size);
     }
 }

@@ -47,7 +47,27 @@ public class FileDAO extends DAO<File> {
         return file;
     }
 
-
+    public void saveList(List<File> files) throws SQLException {
+        connection.setAutoCommit(false);
+        for (File file:files) {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
+                preparedStatement.setLong(1, file.getId());
+                preparedStatement.setString(2, file.getName());
+                preparedStatement.setString(3, file.getFormat());
+                preparedStatement.setLong(4, file.getSize());
+                if (file.getStorage() == null) {
+                    preparedStatement.setNull(5, Types.NUMERIC);
+                } else {
+                    preparedStatement.setLong(5, file.getStorage().getId());
+                }
+                preparedStatement.execute();
+            } catch (SQLException sql) {
+                throw sql;
+            }
+        }
+        connection.commit();
+        connection.setAutoCommit(true);
+    }
     public List<File> getFilesByStorage(Storage storage) throws SQLException {
         List<File> list = new LinkedList<>();
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT*FROM FILES WHERE STORAGE_ID=?")) {
@@ -61,15 +81,35 @@ public class FileDAO extends DAO<File> {
     }
 
     public void delete(long id) throws SQLException {
-        String query = "DELETE FROM FILES WHERE ID=" + id;
-        deleteQuery(query);
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(
+                " DELETE FROM FILES WHERE ID=?")) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (SQLException sql) {
+            throw sql;
+        }
     }
 
     public File findById(long id) throws SQLException {
-        String query = "SELECT*FROM FILES WHERE ID=" + id;
-        return qetResult(query);
+            try (PreparedStatement statement = getConnection().prepareStatement("SELECT*FROM FILES WHERE ID=?")) {
+                statement.setLong(1,id);
+                ResultSet resultSet = statement.getResultSet();
+                return getObject(resultSet);
+            } catch (SQLException sql) {
+                throw sql;
+            }
     }
-
+    public File qetResult(String query) throws SQLException {
+        try (Statement statement = getConnection().createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                return getObject(resultSet);
+            }
+        } catch (SQLException sql) {
+            throw sql;
+        }
+        return null;
+    }
     public long getStorageFreeSpace(Storage storage) throws SQLException {
         long usedSpace = 0;
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT SUM(FILE_SIZE) FROM FILES WHERE STORAGE_ID=?")) {
@@ -82,8 +122,7 @@ public class FileDAO extends DAO<File> {
         return storage.getStorageMaxSize() - usedSpace;
     }
 
-
-    protected File getObject(ResultSet resultSet) throws SQLException {
+    private File getObject(ResultSet resultSet) throws SQLException {
         StorageDAO storageDAO = new StorageDAO();
         return new File(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3), resultSet.getLong(4),
                 storageDAO.findById(resultSet.getLong(5)));
