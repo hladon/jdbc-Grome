@@ -36,8 +36,10 @@ public class Service {
     public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
         List<File> list = fileDAO.getFilesByStorage(storageFrom);
         for (File file : list) {
-            transfer(storageFrom, storageTo, file);
+            checkRestrictions(storageTo, file);
+            file.setStorage(storageTo);
         }
+        fileDAO.updateList(list);
     }
 
     private static void transfer(Storage storageFrom, Storage storageTo, File file) throws Exception {
@@ -55,8 +57,7 @@ public class Service {
             System.out.println("File to big for this storage");
             throw new Exception("File " + file.getId() + " to big for storage " + storage.getId());
         }
-        File fileInStorage = fileDAO.findById(file.getId());
-        if (fileInStorage == null || !fileInStorage.equals(file)) {
+        if (fileDAO.findById(file.getId()) == null ) {
             throw new Exception("File " + file.getId() + " don`t exist in storage ");
         }
         for (String type : storage.getFormatsSupported()) {

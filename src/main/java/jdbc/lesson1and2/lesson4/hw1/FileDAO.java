@@ -47,27 +47,34 @@ public class FileDAO extends DAO<File> {
         return file;
     }
 
-    public void saveList(List<File> files) throws SQLException {
+    public void updateList(List<File> files) throws SQLException {
         connection.setAutoCommit(false);
+        try{
         for (File file:files) {
-            try (PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)")) {
-                preparedStatement.setLong(1, file.getId());
-                preparedStatement.setString(2, file.getName());
-                preparedStatement.setString(3, file.getFormat());
-                preparedStatement.setLong(4, file.getSize());
-                if (file.getStorage() == null) {
-                    preparedStatement.setNull(5, Types.NUMERIC);
-                } else {
-                    preparedStatement.setLong(5, file.getStorage().getId());
-                }
-                preparedStatement.execute();
-            } catch (SQLException sql) {
+            update(file);
+            }
+        } catch (SQLException sql) {
+                connection.rollback();
                 throw sql;
             }
+        connection.commit();
+        connection.setAutoCommit(true);
+    }
+
+    public void saveList(List<File> files) throws SQLException {
+        connection.setAutoCommit(false);
+        try{
+            for (File file:files) {
+                save(file);
+            }
+        } catch (SQLException sql) {
+            connection.rollback();
+            throw sql;
         }
         connection.commit();
         connection.setAutoCommit(true);
     }
+
     public List<File> getFilesByStorage(Storage storage) throws SQLException {
         List<File> list = new LinkedList<>();
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT*FROM FILES WHERE STORAGE_ID=?")) {
