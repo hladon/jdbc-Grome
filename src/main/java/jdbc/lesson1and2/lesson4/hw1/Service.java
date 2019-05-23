@@ -15,10 +15,14 @@ public class Service {
     }
 
     public static void putAll(Storage storage, List<File> files) throws Exception {
+        long size=0;
         for (File file : files) {
             checkRestrictions(storage, file);
+            size+=file.getSize();
         }
+        if (size<fileDAO.getStorageFreeSpace(storage))
         fileDAO.saveList(files);
+        throw new Exception("Total size of files to big for storage "+storage.getId());
     }
 
     public static void delete(Storage storage, File file) throws Exception {
@@ -35,11 +39,16 @@ public class Service {
 
     public static void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
         List<File> list = fileDAO.getFilesByStorage(storageFrom);
+        long size=0;
         for (File file : list) {
             checkRestrictions(storageTo, file);
             file.setStorage(storageTo);
+            size+=file.getSize();
         }
-        fileDAO.updateList(list);
+        if (size<fileDAO.getStorageFreeSpace(storageTo))
+            fileDAO.updateList(list);
+        throw new Exception("Total size of files to big for storage "+storageTo.getId());
+
     }
 
     private static void transfer(Storage storageFrom, Storage storageTo, File file) throws Exception {
