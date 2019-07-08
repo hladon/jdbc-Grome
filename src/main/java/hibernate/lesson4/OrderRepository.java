@@ -54,7 +54,7 @@ public class OrderRepository extends Repository<Order> {
             session.update(room);
             transaction.commit();
         }catch (Exception e){
-            System.err.println("Reservation is failed");
+            System.err.println("Reservation not canceled");
             System.err.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();

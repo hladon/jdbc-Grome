@@ -1,7 +1,6 @@
 package hibernate.lesson4;
 
 
-
 import org.hibernate.*;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
@@ -9,30 +8,31 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 
 
-public abstract class Repository <T> {
+public abstract class Repository<T> {
 
     private static SessionFactory sessionFactory;
     protected Class<T> type;
 
-    public T findById(long id) throws Exception{
-        try(Session session=createSessionFactory().openSession()) {
-            T object=session.get(type,id);
+    public T findById(long id) throws Exception {
+        try (Session session = createSessionFactory().openSession()) {
+            T object = session.get(type, id);
             return object;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println("Search is failed");
             System.err.println(e.getMessage());
             throw e;
         }
     }
-    public  T save (T object){
-        Transaction transaction=null;
-        try(Session session=createSessionFactory().openSession()){
-            transaction=session.getTransaction();
+
+    public T save(T object) {
+        Transaction transaction = null;
+        try (Session session = createSessionFactory().openSession()) {
+            transaction = session.getTransaction();
             transaction.begin();
             session.save(object);
             transaction.commit();
             System.out.println("Save is done");
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Save is failed");
             System.err.println(e.getMessage());
             if (transaction != null)
@@ -41,9 +41,9 @@ public abstract class Repository <T> {
         return object;
     }
 
-    public  void delete(T object) {
+    public void delete(T object) {
         Transaction tr = null;
-        try(Session session=createSessionFactory().openSession()) {
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             session.delete(object);
@@ -59,7 +59,7 @@ public abstract class Repository <T> {
 
     public T update(T object) {
         Transaction tr = null;
-        try (Session session=createSessionFactory().openSession()){
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
             session.update(object);
@@ -73,8 +73,9 @@ public abstract class Repository <T> {
         }
         return object;
     }
+
     public List<T> findByQuery(String searchQuery) throws Exception {
-        try(Session session=createSessionFactory().openSession()){
+        try (Session session = createSessionFactory().openSession()) {
             SQLQuery query = session.createSQLQuery(searchQuery);
             query.addEntity(type);
             List<T> list = query.list();
@@ -87,13 +88,12 @@ public abstract class Repository <T> {
     }
 
 
-    protected   static SessionFactory createSessionFactory() {
+    protected static SessionFactory createSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = new Configuration().configure().buildSessionFactory();
         }
         return sessionFactory;
     }
-
 
 
 }

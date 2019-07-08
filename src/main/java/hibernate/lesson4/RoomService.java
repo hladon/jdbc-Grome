@@ -21,29 +21,14 @@ public class RoomService {
 
 
     public static List<Room> findRooms(Filter filter) throws Exception {
-        Session session = null;
-        try {
-            session = hotelRepository.createSessionFactory().openSession();
-            SQLQuery query = session.createSQLQuery(createQuery(filter));
-            query.addEntity(Hotel.class);
-            List<Hotel> list = query.list();
-            List<Room> roomList = new LinkedList<>();
-            for (Hotel hotel : list) {
-                for (Room room : hotel.getRooms()) {
-                    if (checkRoom(room, filter))
-                        roomList.add(room);
-                }
+        List<Room> roomList = new LinkedList<>();
+        for (Hotel hotel : hotelRepository.findHotels(createQuery(filter))) {
+            for (Room room : hotel.getRooms()) {
+                if (checkRoom(room, filter))
+                    roomList.add(room);
             }
-            return roomList;
-        } catch (Exception e) {
-            System.err.println("Search is failed");
-            System.err.println(e.getMessage());
-            throw e;
-        } finally {
-            if (session != null)
-                session.close();
         }
-
+        return roomList;
 
     }
 

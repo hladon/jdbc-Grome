@@ -14,11 +14,6 @@ public class RoomController {
     }
 
 
-    public static void cancelReservation(long roomId, long userId) throws Exception {
-        if (Session.getLogedUser() == null)
-            throw new Exception("User not logged!");
-        RoomService.cancelReservation(roomId, userId);
 
-    }
 
 }
