@@ -48,7 +48,7 @@ public class Demo {
 //        for (Room room:RoomController.findRooms(filter)){
 //            System.out.println(room);
 //        }
-//    RoomController.bookRoom(1,2,new Date(),new Date(22/03/2019));
+//    OrderController.bookRoom(1,2,new Date(),new Date(22/03/2019));
 //        RoomController.cancelReservation(1,2);
         UserController.logout();
     }
