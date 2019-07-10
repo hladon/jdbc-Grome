@@ -22,7 +22,7 @@ public class HotelRepository extends Repository<Hotel> {
             query.addEntity(Hotel.class);
             list = query.list();
             for (Hotel hotel:list){
-                hotel.getRooms();
+                hotel.getRooms().size();
             }
         } catch (Exception e) {
             System.err.println("Search is failed");
